@@ -12,6 +12,7 @@
  * for Express node server
  * ..................
  * 1
- * 2. 
+ * 2. // post er jonn midel wore 
+     app.use(express.json())
  * 
  */
