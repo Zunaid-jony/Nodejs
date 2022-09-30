@@ -1,6 +1,7 @@
 const express = require('express')
 var cors = require('cors')
 const app = express()
+const { MongoClient, ServerApiVersion } = require('mongodb');
 const port = process.env.PORT || 5000
 
 
@@ -12,6 +13,28 @@ app.get('/', (req, res) => {
   res.send('Hello World ! pagol')
  
 })
+// user: bduser1
+// password: S7RXmKASaVOzUxki
+
+// mongodb+srv://bduser1:<password>@cluster0.ajugait.mongodb.net/?retryWrites=true&w=majority
+
+
+
+
+const uri = "mongodb+srv://bduser1:S7RXmKASaVOzUxki@cluster0.ajugait.mongodb.net/?retryWrites=true&w=majority";
+const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true, serverApi: ServerApiVersion.v1 });
+async function run() {
+    try {
+     await client.connect();
+     const userCollection = client.db('foodExpress').collection("user")
+     const user = { name:'Boss Miah', email:"jony@gmail.com"}
+     const result = await userCollection.insertOne(user)
+     console.log(`A document was inserted with the _id: ${result.insertedId}`);
+    } finally {
+    //   await client.close();
+    }
+  }
+  run().catch(console.dir);
 
 
 
@@ -30,6 +53,10 @@ const users = [
         id:4 , name: 'abcd', email:'md.jony.soft@gmail.com', phone:'01627392810'    
     }
 ]
+
+// app.get('/users', (req,res)=>{
+//     res.send(users)
+// })
 app.get('/users',(req, res) =>{
     // filter by query parameter
     if(req.query.name){
